@@ -76,10 +76,14 @@ def create_app(test_config=None):
         if actor is None:
             db.session.rollback()
             abort(404)
+        
+        body = request.get_json()
+        if 'name' or 'gender' not in body:
+            abort(422)
 
         try:
           
-            body = request.get_json()
+            # body = request.get_json()
             if 'name' in body:
                 actor.name = body['name']
             if 'gender' in body:
@@ -120,7 +124,7 @@ def create_app(test_config=None):
         actor = Actor.query.get(id)
         if actor is None:
             db.session.rollback()
-            abort(422)
+            abort(400)
         
         actor.delete()
 
@@ -152,31 +156,33 @@ def create_app(test_config=None):
 
     @app.route('/movie', methods=['POST'])
     @requires_auth(permission='post:movie')
-    def add_movie():
+    def add_movie(payload):
         '''
         This endpoint insert Movie information
         '''
         body = request.get_json()
+        if body is None:
+            abort(422)
         try:
             title=body['title'],
             length=body['length'],
             release_date=body['release_date']
-            actors = Actor.query.filter(Actor.id == body['actor_id']).one_or_none()
-            actors = [actors]
-            movie = Movie(title=title, length=length, release_date=release_date, actors=actors)
+            # actors = Actor.query.filter(Actor.id == body['actor_id']).one_or_none()
+            # actors = [actors]
+            movie = Movie(title=title, length=length, release_date=release_date)
             movie.insert()
             return jsonify({
               'success': True
             })
         except Exception as e:
             print(e)
-            abort(404)
+            abort(400)
 
 
 
     @app.route('/movies/<int:id>', methods=['PATCH'])
     @requires_auth(permission='update:movie')
-    def update_movie(id):
+    def update_movie(payload, id):
         '''
         This endpoint updates an actor info given his id
         '''
@@ -206,7 +212,7 @@ def create_app(test_config=None):
 
     @app.route("/movies/<int:id>", methods=["DELETE"])
     @requires_auth(permission='delete:movie')
-    def delete_movie(id):
+    def delete_movie(payload, id):
         movie = Movie.query.get(id)
         if movie is None:
             db.session.rollback()
