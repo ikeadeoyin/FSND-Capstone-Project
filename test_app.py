@@ -79,7 +79,7 @@ class CapstoneCase(unittest.TestCase):
         """Executed after reach test"""
         pass
 
-    '''
+    
     def test_get_actors(self):
         res = self.client().get('/actors', headers={
             "Authorization": 'Bearer ' + self.token_assistant })
@@ -91,8 +91,7 @@ class CapstoneCase(unittest.TestCase):
     def test_get_actors_failure(self):
         res = self.client().get('/actor', headers={
             "Authorization": 'Bearer ' + self.token_assistant })
-        body = json.loads(res.data)
-        
+        body = json.loads(res.data)   
         self.assertEqual(res.status_code, 404)
         self.assertEqual(body['success'], False)
     
@@ -104,7 +103,6 @@ class CapstoneCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(body['success'], True)
         
-    
     def test_post_actor_failure(self):
         res = self.client().post('/actors', headers={
             "Authorization": 'Bearer ' + self.token_director }, json=self.fail_actor)
@@ -112,33 +110,27 @@ class CapstoneCase(unittest.TestCase):
         
         self.assertEqual(res.status_code, 404)
         self.assertEqual(body['success'], False)
-    
-    
-
 
     def test_update_actor(self):
-        res = self.client().patch('/actors/6', headers={
+        res = self.client().patch('/actors/7', headers={
             "Authorization": 'Bearer '+ self.token_director }, json=self.update_actor)
         body = json.loads(res.data)
         
         self.assertEqual(res.status_code, 200)
         self.assertEqual(body['success'], True)
-    
 
     def test_update_actor_failure(self):
-        res = self.client().patch('/actors/3', headers={
+        res = self.client().patch('/actors/7', headers={
             "Authorization": 'Bearer '+ self.token_director }, json=self.update_actor_failure)
         body = json.loads(res.data)
         
         self.assertEqual(res.status_code, 422)
         self.assertEqual(body['success'], False)
-    
-    
+     
     def test_delete_actor(self):
-        res = self.client().delete('/actors/3', headers={
+        res = self.client().delete('/actors/8', headers={
             "Authorization": 'Bearer '+ self.token_director })
-        body = json.loads(res.data)
-        
+        body = json.loads(res.data) 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(body['success'], True)
         self.assertEqual(body['deleted'], 3)
@@ -146,19 +138,14 @@ class CapstoneCase(unittest.TestCase):
     def test_delete_actor_failure(self):
         res = self.client().delete('/actors/50', headers={
             "Authorization": 'Bearer '+ self.token_director })
-        body = json.loads(res.data)
-        
+        body = json.loads(res.data)   
         self.assertEqual(res.status_code, 400)
-        self.assertEqual(body['success'], False)
-    
-        
-        
+        self.assertEqual(body['success'], False)       
 
     def test_get_movies(self):
         res = self.client().get('/movies', headers={
             "Authorization": 'Bearer ' + self.token_assistant })
-        body = json.loads(res.data)
-        
+        body = json.loads(res.data)  
         self.assertEqual(res.status_code, 200)
         self.assertEqual(body['success'], True)
     
@@ -166,21 +153,15 @@ class CapstoneCase(unittest.TestCase):
         res = self.client().get('/move', headers={
             "Authorization": 'Bearer ' + self.token_assistant })
         body = json.loads(res.data)
-        
         self.assertEqual(res.status_code, 404)
         self.assertEqual(body['success'], False)    
-
 
     def test_post_movie(self):
         res = self.client().post('/movie', headers={
             "Authorization": 'Bearer '  + self.token_producer}, json=self.new_movie)
-        body = json.loads(res.data)
-        
+        body = json.loads(res.data) 
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(body['success'], True)
-    
-    
-    
+        self.assertEqual(body['success'], True)   
 
     def test_post_movie_failure(self):
         res = self.client().post('/movie', headers={
@@ -192,7 +173,7 @@ class CapstoneCase(unittest.TestCase):
     
 
     def test_update_movie(self):
-        res = self.client().patch('/movies/2', headers={
+        res = self.client().patch('/movies/3', headers={
             "Authorization": 'Bearer ' + self.token_director }, json=self.update_movie)
         body = json.loads(res.data)
         
@@ -200,17 +181,15 @@ class CapstoneCase(unittest.TestCase):
         self.assertEqual(body['success'], True)
 
     def test_update_movie_failure(self):
-        res = self.client().patch('/movies/2', headers={
+        res = self.client().patch('/movies/3', headers={
             "Authorization": 'Bearer ' + self.token_director }, json=self.update_movie_failure)
         body = json.loads(res.data)
         
         self.assertEqual(res.status_code, 404)
-        self.assertEqual(body['success'], False)
-
-    
+        self.assertEqual(body['success'], False)   
 
     def test_delete_movie(self):
-        res = self.client().delete('/movies/2', headers={
+        res = self.client().delete('/movies/6', headers={
             "Authorization": 'Bearer '+ self.token_producer })
         body = json.loads(res.data)
         
@@ -226,7 +205,6 @@ class CapstoneCase(unittest.TestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(body['success'], False)
 
-    '''
 
     #---RBAC Tests-----#
     #----Casting Assistant----#
@@ -269,7 +247,7 @@ class CapstoneCase(unittest.TestCase):
     #-----Executive Producer-----#
 
     def test_update_movie_rbac(self):
-        res = self.client().patch('/movies/2', headers={
+        res = self.client().patch('/movies/3', headers={
             "Authorizationn":  self.token_producer }, json=self.update_movie)
         body = json.loads(res.data)
         
@@ -278,18 +256,12 @@ class CapstoneCase(unittest.TestCase):
 
     
     def test_delete_movie_wrong_token(self):
-        res = self.client().delete('/movies/5', headers={
+        res = self.client().delete('/movies/6', headers={
             "Authorization": 'Bearer '+ self.token_producer })
         body = json.loads(res.data)
         
         self.assertEqual(res.status_code, 422)
         self.assertEqual(body['success'], False)
-
-
-
-
-
-
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
