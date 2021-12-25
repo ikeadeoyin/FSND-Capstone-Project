@@ -250,7 +250,7 @@ Sample Response:
 }
 ```
 
-### PATCH /moviess/<int:id>
+### PATCH /movies/<int:id>
 Updates a movie's info
 Query Parameter: id
 Request body:
