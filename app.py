@@ -26,16 +26,7 @@ def create_app(test_config=None):
 
     @app.route('/')
     def get_greeting():
-        # excited = os.environ['EXCITED']
-        greeting = "Hello" 
-        # if excited == 'true': 
-        #     greeting = greeting + "!!!!! You are doing great in this Udacity project."
-        return greeting
-
-    @app.route('/coolkids')
-    def be_cool():
-        return "Be cool, man, be coooool! You're almost a FSND grad!"
-    
+        return  "You are doing great in this Udacity project."
     
     @app.route('/actors', methods=['POST'])
     @requires_auth(permission='post:actor')
